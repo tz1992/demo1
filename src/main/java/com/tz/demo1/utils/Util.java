@@ -9,7 +9,10 @@ import com.tz.demo1.entity.Debt;
 public class Util {
 
 	public static Debt[] sort (ArrayList<Debt> list){
-		Debt[]debts=(Debt[]) list.toArray();
+		Debt[]debts=new Debt[list.size()];
+		for (int i = 0; i < debts.length; i++) {
+			debts[i]=list.get(i);
+		}
 		Arrays.sort(debts, new Comparator<Debt>() {
 
 		
