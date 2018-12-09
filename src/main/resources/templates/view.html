@@ -3,48 +3,169 @@
 <head>
 <meta charset="UTF-8" />
 <title>解析文件</title>
-
+<link rel="stylesheet" type="text/css" href="easyui.css" />
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.easyui.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#ddlLine').combotree(
+				{
+					valueField : "id", //Value字段
+					textField : "text", //Text字段
+					multiple : true,
+					data : [ {
+						"id" : "全部",
+						"text" : "全部",
+						"children" : [ {
+							"id" : "湖北",
+							"text" : "湖北"
+						}, {
+							"id" : "湖南",
+							"text" : "湖南"
+						}, {
+							"id" : "重庆",
+							"text" : "重庆"
+						}, {
+							"id" : "北京",
+							"text" : "北京"
+						} ]
+					} ],
+					//                url: "tree_data2.json", //数据源
+					onCheck : function(node, checked) {
+						//让全选不显示
+						$("#ddlLine").combotree(
+								"setText",
+								$("#ddlLine").combobox("getText").toString()
+										.replace("全选,", ""));
+					},
+					onClick : function(node, checked) {
+						//让全选不显示
+						$("#ddlLine").combotree(
+								"setText",
+								$("#ddlLine").combobox("getText").toString()
+										.replace("全选,", ""));
+					}
+				});
+		$('#ddlLine1').combotree(
+				{
+					valueField : "id", //Value字段
+					textField : "text", //Text字段
+					multiple : true,
+					data : [ {
+						"id" : "全部",
+						"text" : "All",
+						"children" : [ {
+							"id" : "15-20",
+							"text" : "15-20"
+						}, {
+							"id" : "21-25",
+							"text" : "21-25"
+						}, {
+							"id" : "26-30",
+							"text" : "26-30"
+						}, {
+							"id" : "31-35",
+							"text" : "31-35"
+						}, {
+							"id" : "36-40",
+							"text" : "36-40"
+						}, {
+							"id" : "41-45",
+							"text" : "41-45"
+						}, {
+							"id" : "46-50",
+							"text" : "46-50"
+						}, {
+							"id" : "51-55",
+							"text" : "51-55"
+						}, {
+							"id" : "56-60",
+							"text" : "56-60"
+						} ]
+					} ],
+					//                url: "tree_data2.json", //数据源
+					onCheck : function(node, checked) {
+						//让全选不显示
+						$("#ddlLine1").combotree(
+								"setText",
+								$("#ddlLine1").combobox("getText").toString()
+										.replace("全选,", ""));
+					},
+					onClick : function(node, checked) {
+						//让全选不显示
+						$("#ddlLine1").combotree(
+								"setText",
+								$("#ddlLine1").combobox("getText").toString()
+										.replace("全选,", ""));
+					}
+				});
+	})
+</script>
 
 </head>
 <body>
-	<div th:if="${message}">
-		<h2 th:text="${message}" />
-	</div>
 
 	<div>
-		<form method="POST" enctype="multipart/form-data" action="/">
-			<table>
-				<tr>
-					<td>本金选择：</td>
-					<td>最小</td>
-					<td><input type="text" name="low" required="true" /></td>
-					<td>最大</td>
-					<td><input type="text" name="high" required="true" /></td>
-				</tr>
-				<tr>
-					<td>性别</td>
-					<td><input type="radio" name="sex" value="男" checked="true" />男</td>
-					<td><input type="radio" name="sex" value="女" />女</td>
-					<td>户籍</td>
-					<td><select size="1" name="census" multiple="multiple">
-							<option value="湖北">湖北</option>
-							<option value="湖南">湖南</option>
-							<option value="重庆">重庆</option>
-							<option value="北京">北京</option>
-					</select></td>
-				</tr>
-				<tr>
-				
-				</tr>
-				<tr>
-					<td>上传文件</td>
-					<td><input type="file" name="file" /></td>
-					<td><input type="submit" value="Upload" /></td>
-				</tr>
-			</table>
-		</form>
-	</div>
+		<div align="center">
+			<h1>文件解析</h1>
+		</div>
+		<div align="center">
+			<form method="POST" enctype="multipart/form-data" action="/">
 
+				<div align="center">
+					本金选择： 最小 <input type="text" name="low" required="true"
+						style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
+					最大 <input type="text" name="high" required="true"
+						style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
+				</div>
+				<br />
+				<div align="center">
+					性别 <input type="radio" name="sex" value="男" checked="true" />男 <input
+						type="radio" name="sex" value="女" />女
+				</div>
+				<br />
+
+				<div align="center">
+					户籍 <select id="ddlLine" name="census"
+						style="width: 205px; height: 24px; align: center">
+					</select>
+				</div>
+				<br />
+				<div align="center">
+					年龄 <select id="ddlLine1" name="age"
+						style="width: 205px; height: 24px; align: center">
+
+					</select>
+				</div>
+				<br />
+				<div align="center">
+
+					进入案池时间 <select name="days"
+						style="width: 160px; height: 24px; align: center; border-color: #95b8e7; border-width: 1px; border-style: solid">
+						<option value="2016/1">2016上</option>
+						<option value="2016/7">2016下</option>
+						<option value="2017/1">2017上</option>
+						<option value="2017/7">2017下</option>
+						<option value="2018/1">2018上</option>
+						<option value="2018/7">2018下</option>
+						<option value="2019/1">2019上</option>
+						<option value="2019/7">2019下</option>
+
+
+					</select>
+				</div>
+				<br />
+				<div align="center">
+					上传文件 <input type="file" name="file" />
+				</div>
+				<br />
+				<div align="center">
+					<input type="submit" value="上传" name="上传" />
+				</div>
+			</form>
+		</div>
+
+	</div>
 
 </body>
 </html>
