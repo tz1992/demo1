@@ -78,7 +78,10 @@ public class Util {
       // 选定的时间
       int year1 = Integer.parseInt(days.split("/")[0]);
       int month1 = Integer.parseInt(days.split("/")[1]);
-      boolean flagDays = (year == year1 && month >= month1 && month <= (month1 + 5));
+      boolean flagDays=false;
+      if(year>year1||(year==year1&&month>=month1)){
+        flagDays=true;
+      }
       return flagDays;
 	}
 	

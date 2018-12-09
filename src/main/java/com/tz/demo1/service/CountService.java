@@ -55,7 +55,7 @@ public class CountService {
         Row row = sheet.getRow(i);
         // Excel表中的性别，户籍，进入案池时间，余额，证件信息
         String sex = row.getCell(6).getStringCellValue();
-        String hometown = row.getCell(15).getStringCellValue();
+        String hometown = row.getCell(7).getStringCellValue();
         String days1 = row.getCell(3).getStringCellValue();
         double principle = row.getCell(14).getNumericCellValue();
         String ID = row.getCell(8).getStringCellValue();
@@ -116,10 +116,10 @@ public class CountService {
 
     }
 
-    Date date = new Date();
-    int year = date.getYear() + 1900;
-    int month = date.getMonth() + 1;
-    int day = date.getDay();
+   Calendar calendar=Calendar.getInstance();
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH)+1;
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
     String fileName = year + "年" + month + "月" + day + "日Q72抢案邮件";
     fileName = URLEncoder.encode(fileName, "UTF-8");
     response.reset();
