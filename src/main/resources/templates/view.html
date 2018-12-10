@@ -1,168 +1,317 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta charset="UTF-8" />
-<title>解析文件</title>
-<link rel="stylesheet" type="text/css" href="easyui.css" />
-<script type="text/javascript" src="jquery.min.js"></script>
-<script type="text/javascript" src="jquery.easyui.min.js"></script>
-<script type="text/javascript">
-	$(function() {
-		$('#ddlLine').combotree(
+	<meta charset="UTF-8" />
+	<title>解析文件</title>
+	<link rel="stylesheet" type="text/css" href="easyui.css" />
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$('#ddlLine').combotree(
 				{
-					valueField : "id", //Value字段
-					textField : "text", //Text字段
-					multiple : true,
-					data : [ {
-						"id" : "全部",
-						"text" : "全部",
-						"children" : [ {
-							"id" : "北京",
-							"text" : "北京"
+					valueField: "id", //Value字段
+					textField: "text", //Text字段
+					multiple: true,
+					data: [{
+						"id": "全部",
+						"text": "全部",
+						"children": [{
+							"id": "北京",
+							"text": "北京"
 						}, {
-							"id" : "成都",
-							"text" : "成都"
+							"id": "成都",
+							"text": "成都"
 						}, {
-							"id" : "东莞",
-							"text" : "东莞"
+							"id": "东莞",
+							"text": "东莞"
 						}, {
-							"id" : "佛山",
-							"text" : "佛山"
-						} ,{
-							"id" : "广州",
-							"text" : "广州"
-						} ,{
-							"id" : "哈尔滨",
-							"text" : "哈尔滨"
-						} ,{
-							"id" : "杭州",
-							"text" : "杭州"
-						} ,{
-							"id" : "南京",
-							"text" : "南京"
-						} ,{
-							"id" : "南宁",
-							"text" : "南宁"
-						} ,{
-							"id" : "泉州",
-							"text" : "泉州"
-						} ,{
-							"id" : "厦门",
-							"text" : "厦门"
-						} ,{
-							"id" : "上海",
-							"text" : "上海"
-						} ,{
-							"id" : "深圳",
-							"text" : "深圳"
-						} ,{
-							"id" : "苏州",
-							"text" : "苏州"
-						} ,{
-							"id" : "天津",
-							"text" : "天津"
-						} ,{
-							"id" : "温州",
-							"text" : "温州"
-						} ,{
-							"id" : "乌鲁木齐",
-							"text" : "乌鲁木齐"
-						} ,{
-							"id" : "武汉",
-							"text" : "武汉"
-						} ,{
-							"id" : "西安",
-							"text" : "西安"
-						} ,{
-							"id" : "扬州",
-							"text" : "扬州"
-						} ,{
-							"id" : "长沙",
-							"text" : "长沙"
-						} ,{
-							"id" : "中山",
-							"text" : "中山"
-						} ,{
-							"id" : "重庆",
-							"text" : "重庆"
-						} ,{
-							"id" : "珠海",
-							"text" : "珠海"
-						} ,]
-					} ],
+							"id": "佛山",
+							"text": "佛山"
+						}, {
+							"id": "广州",
+							"text": "广州"
+						}, {
+							"id": "哈尔滨",
+							"text": "哈尔滨"
+						}, {
+							"id": "杭州",
+							"text": "杭州"
+						}, {
+							"id": "南京",
+							"text": "南京"
+						}, {
+							"id": "南宁",
+							"text": "南宁"
+						}, {
+							"id": "泉州",
+							"text": "泉州"
+						}, {
+							"id": "厦门",
+							"text": "厦门"
+						}, {
+							"id": "上海",
+							"text": "上海"
+						}, {
+							"id": "深圳",
+							"text": "深圳"
+						}, {
+							"id": "苏州",
+							"text": "苏州"
+						}, {
+							"id": "天津",
+							"text": "天津"
+						}, {
+							"id": "温州",
+							"text": "温州"
+						}, {
+							"id": "乌鲁木齐",
+							"text": "乌鲁木齐"
+						}, {
+							"id": "武汉",
+							"text": "武汉"
+						}, {
+							"id": "西安",
+							"text": "西安"
+						}, {
+							"id": "扬州",
+							"text": "扬州"
+						}, {
+							"id": "长沙",
+							"text": "长沙"
+						}, {
+							"id": "中山",
+							"text": "中山"
+						}, {
+							"id": "重庆",
+							"text": "重庆"
+						}, {
+							"id": "珠海",
+							"text": "珠海"
+						},]
+					}],
 					//                url: "tree_data2.json", //数据源
-					onCheck : function(node, checked) {
+					onCheck: function (node, checked) {
 						//让全选不显示
 						$("#ddlLine").combotree(
-								"setText",
-								$("#ddlLine").combobox("getText").toString()
-										.replace("全选,", ""));
+							"setText",
+							$("#ddlLine").combobox("getText").toString()
+								.replace("全选,", ""));
 					},
-					onClick : function(node, checked) {
+					onClick: function (node, checked) {
 						//让全选不显示
 						$("#ddlLine").combotree(
-								"setText",
-								$("#ddlLine").combobox("getText").toString()
-										.replace("全选,", ""));
+							"setText",
+							$("#ddlLine").combobox("getText").toString()
+								.replace("全选,", ""));
 					}
 				});
-		$('#ddlLine1').combotree(
+			$('#ddlLine1').combotree(
 				{
-					valueField : "id", //Value字段
-					textField : "text", //Text字段
-					multiple : true,
-					data : [ {
-						"id" : "全部",
-						"text" : "All",
-						"children" : [ {
-							"id" : "15-20",
-							"text" : "15-20"
+					valueField: "id", //Value字段
+					textField: "text", //Text字段
+					multiple: true,
+					data: [{
+						"id": "全部",
+						"text": "全部",
+						"children": [{
+							"id": "15-20",
+							"text": "15-20"
 						}, {
-							"id" : "21-25",
-							"text" : "21-25"
+							"id": "21-25",
+							"text": "21-25"
 						}, {
-							"id" : "26-30",
-							"text" : "26-30"
+							"id": "26-30",
+							"text": "26-30"
 						}, {
-							"id" : "31-35",
-							"text" : "31-35"
+							"id": "31-35",
+							"text": "31-35"
 						}, {
-							"id" : "36-40",
-							"text" : "36-40"
+							"id": "36-40",
+							"text": "36-40"
 						}, {
-							"id" : "41-45",
-							"text" : "41-45"
+							"id": "41-45",
+							"text": "41-45"
 						}, {
-							"id" : "46-50",
-							"text" : "46-50"
+							"id": "46-50",
+							"text": "46-50"
 						}, {
-							"id" : "51-55",
-							"text" : "51-55"
+							"id": "51-55",
+							"text": "51-55"
 						}, {
-							"id" : "56-60",
-							"text" : "56-60"
-						} ]
-					} ],
+							"id": "56-60",
+							"text": "56-60"
+						}]
+					}],
 					//                url: "tree_data2.json", //数据源
-					onCheck : function(node, checked) {
+					onCheck: function (node, checked) {
 						//让全选不显示
 						$("#ddlLine1").combotree(
-								"setText",
-								$("#ddlLine1").combobox("getText").toString()
-										.replace("全选,", ""));
+							"setText",
+							$("#ddlLine1").combobox("getText").toString()
+								.replace("全选,", ""));
 					},
-					onClick : function(node, checked) {
+					onClick: function (node, checked) {
 						//让全选不显示
 						$("#ddlLine1").combotree(
-								"setText",
-								$("#ddlLine1").combobox("getText").toString()
-										.replace("全选,", ""));
+							"setText",
+							$("#ddlLine1").combobox("getText").toString()
+								.replace("全选,", ""));
 					}
 				});
-	})
-</script>
+				$('#ddlLine2').combotree(
+				{
+					valueField: "id", //Value字段
+					textField: "text", //Text字段
+					multiple: true,
+					data: [{
+						"id": "全部",
+						"text": "全部",
+						"children": [{
+							"id": "男",
+							"text": "男"
+						}, {
+							"id": "女",
+							"text": "女"
+						}]
+					}],
+					//                url: "tree_data2.json", //数据源
+					onCheck: function (node, checked) {
+						//让全选不显示
+						$("#ddlLine2").combotree(
+							"setText",
+							$("#ddlLine2").combobox("getText").toString()
+								.replace("全选,", ""));
+					},
+					onClick: function (node, checked) {
+						//让全选不显示
+						$("#ddlLine2").combotree(
+							"setText",
+							$("#ddlLine2").combobox("getText").toString()
+								.replace("全选,", ""));
+					}
+				});
+				$('#ddlLine3').combotree(
+				{
+					valueField: "id", //Value字段
+					textField: "text", //Text字段
+					multiple: true,
+					data: [{
+						"id": "全部",
+						"text": "全部",
+						"children": [{
+							"id": "未逾期",
+							"text": "未逾期"
+						}, {
+							"id": "逾期1-30天",
+							"text": "逾期1-30天"
+						}, {
+							"id": "逾期31-60天",
+							"text": "逾期31-60天"
+						}, {
+							"id": "逾期61-90天",
+							"text": "逾期61-90天"
+						}, {
+							"id": "逾期91-120天",
+							"text": "逾期91-120天"
+						}, {
+							"id": "逾期121-150天",
+							"text": "逾期121-150天"
+						}, {
+							"id": "逾期151-180天",
+							"text": "逾期151-180天"
+						}, {
+							"id": "逾期181-210天",
+							"text": "逾期181-210天"
+						}, {
+							"id": "逾期211-240天",
+							"text": "逾期211-240天"
+						}, {
+							"id": "逾期241-270天",
+							"text": "逾期241-270天"
+						}, {
+							"id": "逾期271-300天",
+							"text": "逾期271-300天"
+						}, {
+							"id": "逾期301-330天",
+							"text": "逾期301-330天"
+						}, {
+							"id": "逾期331-360天",
+							"text": "逾期331-360天"
+						}, {
+							"id": "逾期361-390天",
+							"text": "逾期361-390天"
+						}, {
+							"id": "逾期391-420天",
+							"text": "逾期391-420天"
+						}, {
+							"id": "逾期421-450天",
+							"text": "逾期421-450天"
+						}, {
+							"id": "逾期451-480天",
+							"text": "逾期451-480天"
+						}, {
+							"id": "逾期481-510天",
+							"text": "逾期481-510天"
+						}, {
+							"id": "逾期511-540天",
+							"text": "逾期511-540天"
+						}, {
+							"id": "逾期541-570天",
+							"text": "逾期541-570天"
+						}, {
+							"id": "逾期571-600天",
+							"text": "逾期571-600天"
+						}, {
+							"id": "逾期601-630天",
+							"text": "逾期601-630天"
+						}, {
+							"id": "逾期631-660天",
+							"text": "逾期631-660天"
+						}, {
+							"id": "逾期661-690天",
+							"text": "逾期661-690天"
+						}, {
+							"id": "逾期691-720天",
+							"text": "逾期691-720天"
+						},{
+							"id": "逾期721天以上",
+							"text": "逾期721天以上"
+						}]
+					}],
+					//                url: "tree_data2.json", //数据源
+					onCheck: function (node, checked) {
+						//让全选不显示
+						$("#ddlLine3").combotree(
+							"setText",
+							$("#ddlLine3").combobox("getText").toString()
+								.replace("全选,", ""));
+					},
+					onClick: function (node, checked) {
+						//让全选不显示
+						$("#ddlLine3").combotree(
+							"setText",
+							$("#ddlLine3").combobox("getText").toString()
+								.replace("全选,", ""));
+					}
+				});
+		    // $('#check').click(
+			// 	function(){
+			// 		var ret=/^\d+(\.{0,1}\d+){0,1}$/;
+            //         var value=$("#check").val();
+			// 		if(ret.test(value)){
+            //             alert('ok')
+			// 		}else{
+            //             alert('请输入非负数')
+			// 		}
+			// 	}
+			// );
+		})
+	</script>
 
 </head>
+
 <body>
 
 	<div>
@@ -173,35 +322,41 @@
 			<form method="POST" enctype="multipart/form-data" action="/">
 
 				<div align="center">
-					本金选择： 最小 <input type="text" name="low" required="true"
-						style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
-					最大 <input type="text" name="high" required="true"
-						style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
+					本金选择： 最小 <input type="text"  id="check" name="low" required="true" style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
+					最大 <input type="text" name="high" required="true" style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
 				</div>
 				<br />
 				<div align="center">
-					性别 <input type="radio" name="sex" value="男" checked="true" />男 <input
-						type="radio" name="sex" value="女" />女
+					最大金额总和:  <input type="text" name="sum" required="true" style="width: 150px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
+					
+				</div>
+				<br />
+				<div align="center">
+					性别 <select id="ddlLine2" name="sex" style="width: 205px; height: 24px; ">
+					</select>
 				</div>
 				<br />
 
 				<div align="center">
-					户籍 <select id="ddlLine" name="census"
-						style="width: 205px; height: 24px; align: center">
+					城市调整 <select id="ddlLine" name="census" style="width: 205px; height: 24px; ">
 					</select>
 				</div>
 				<br />
 				<div align="center">
-					年龄 <select id="ddlLine1" name="age"
-						style="width: 205px; height: 24px; align: center">
+					年龄段 <select id="ddlLine1" name="age" style="width: 205px; height: 24px; ">
 
 					</select>
 				</div>
 				<br />
 				<div align="center">
+					逾期时间 <select id="ddlLine3" name="overTime" style="width: 205px; height: 24px; ">
 
-					进入案池时间 <select name="days"
-						style="width: 160px; height: 24px; align: center; border-color: #95b8e7; border-width: 1px; border-style: solid">
+					</select>
+				</div>
+				<br/>
+				<div align="center">
+
+					进入案池时间 <select name="days" style="width: 160px; height: 24px;  border-color: #95b8e7; border-width: 1px; border-style: solid">
 						<option value="2014/1">2014上</option>
 						<option value="2014/7">2014下</option>
 						<option value="2015/1">2015上</option>
@@ -214,7 +369,7 @@
 						<option value="2018/7">2018下</option>
 						<option value="2019/1">2019上</option>
 						<option value="2019/7">2019下</option>
-                        <option value="2020/1">2020上</option>
+						<option value="2020/1">2020上</option>
 						<option value="2020/7">2020下</option>
 						<option value="2021/1">2021上</option>
 						<option value="2021/7">2021下</option>
@@ -229,6 +384,7 @@
 
 					</select>
 				</div>
+				
 				<br />
 				<div align="center">
 					上传文件 <input type="file" name="file" />
@@ -243,4 +399,5 @@
 	</div>
 
 </body>
+
 </html>

@@ -9,8 +9,14 @@ public class Debt {
 	//机构简称
 	public String org;
 	
-
+    public String overTime;
 	
+	public String getOverTime() {
+		return overTime;
+	}
+	public void setOverTime(String overTime) {
+		this.overTime = overTime;
+	}
 	// 客户代码
 	public String clientCode;
 	//抢案代码

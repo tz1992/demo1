@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tz.demo1.service.CountService;
+import com.tz.demo1.utils.Util;
 
 @Controller
 public class DebtController {
@@ -29,26 +30,14 @@ public class DebtController {
   public void upload(@RequestParam("file") MultipartFile file, @RequestParam("sex") String sex,
       @RequestParam("census") String census, @RequestParam("low") String low,
       @RequestParam("high") String high, HttpServletResponse response,
-      @RequestParam("age") String age, @RequestParam("days") String days) throws IOException {
+      @RequestParam("age") String age, @RequestParam("days") String days,@RequestParam("sum") String sum,
+      @RequestParam("overTime") String overTime) throws IOException {
 
     double l = Double.parseDouble(low);
     double h = Double.parseDouble(high);
-    String census1 = null;
-    String age1 = null;
+   
 
-    if (census.startsWith("全部")) {
-      census1 = census.substring(3);
-    } else {
-      census1 = census;
-    }
-
-    if (age.startsWith("全部")) {
-      age1 = age.substring(3);
-    } else {
-      age1 = age;
-    }
-
-    service.deal(file, sex, census1, l, h, response, age1, days);
+    service.deal(file, Util.dealStr(sex), Util.dealStr(census), l, h, response, Util.dealStr(age), days,sum,Util.dealStr(overTime));
 
   }
 }

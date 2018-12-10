@@ -4,15 +4,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,7 +27,7 @@ public class CountService {
   private static final String SUFFIX_2007 = ".xlsx";
 
   public void deal(MultipartFile file, String sex2, String census, double low, double high,
-      HttpServletResponse response, String age, String days) throws IOException {
+      HttpServletResponse response, String age, String days, String sum, String overTime) throws IOException {
     ArrayList<Debt> list = new ArrayList<>();
     Workbook workbook = null;
     String originalFilename = file.getOriginalFilename();
@@ -55,15 +53,17 @@ public class CountService {
         Row row = sheet.getRow(i);
         // Excel表中的性别，户籍，进入案池时间，余额，证件信息
         String sex = row.getCell(6).getStringCellValue();
+        String time=row.getCell(0).getStringCellValue();
         String hometown = row.getCell(7).getStringCellValue();
         String days1 = row.getCell(3).getStringCellValue();
-        double principle = row.getCell(14).getNumericCellValue();
+        //余额
+        double principle = row.getCell(5).getNumericCellValue();
         String ID = row.getCell(8).getStringCellValue();
         /*
          * 判断这些信息是否和理
          */
 
-        if (Util.judgeCensus(census, hometown) && (sex.equals(sex2))
+        if (Util.judge(census, hometown) && Util.judge(sex2, sex)&&Util.judge(overTime, time)
             && (principle >= low && principle <= high) && Util.judgeId(ID, age)
             && Util.judgeTime(days, days1)) {
           total += row.getCell(5).getNumericCellValue();
@@ -78,7 +78,7 @@ public class CountService {
           continue;
         }
       }
-      if (total >= 15000000) {
+      if (total >= Integer.parseInt(sum)) {
         for (int i = 0; i < list.size(); i++) {
           Debt debt = list.get(i);
           total -= debt.balance;
@@ -100,6 +100,10 @@ public class CountService {
 
 
     HSSFSheet hsheet = wb.createSheet("邮件汇总");
+    hsheet.setColumnWidth(0, 230*20);
+    hsheet.setColumnWidth(1, 180*20);
+    hsheet.setColumnWidth(2, 180*20);
+    hsheet.setColumnWidth(3, 180*20);
     HSSFRow titlerRow = hsheet.createRow(0);
     titlerRow.createCell(0).setCellValue("主持卡人代码");
     titlerRow.createCell(1).setCellValue("余额（人民币）");
