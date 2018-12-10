@@ -1,30 +1,34 @@
 package com.tz.demo1.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.tz.demo1.entity.Debt;
 import com.tz.demo1.utils.Util;
 
@@ -142,13 +146,18 @@ public class CountService {
     int month = calendar.get(Calendar.MONTH)+1;
     int day = calendar.get(Calendar.DAY_OF_MONTH);
     String fileName = year + "年" + month + "月" + day + "日Q72抢案邮件";
-    fileName = URLEncoder.encode(fileName, "UTF-8");
-    response.reset();
-    response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xls");
-    OutputStream os = response.getOutputStream();
-    wb.write(os);
-    os.flush();
-    os.close();
+    ByteArrayOutputStream baos=new ByteArrayOutputStream();
+    wb.write(baos);
+    baos.flush();
+    byte[]bt=baos.toByteArray();
+    InputStream is=new ByteArrayInputStream(bt,0,bt.length);
+//    fileName = URLEncoder.encode(fileName, "UTF-8");
+//    response.reset();
+//    response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xls");
+//    OutputStream os = response.getOutputStream();
+//    wb.write(os);
+//    os.flush();
+//    os.close();
     /*
      * 发带附件的邮件
      */
@@ -157,9 +166,10 @@ public class CountService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(sender);
         helper.setTo(receiver);
-        helper.setSubject("附件邮件");
+        helper.setSubject(fileName);
         helper.setText("这是一封带附件的邮件", true);
-        helper.addAttachment(fileName, file);
+        DataSource source = new ByteArrayDataSource(is, "application/msexcel"); 
+        helper.addAttachment(fileName+".xls", source);
        
 
         javaMailSender.send(message);
