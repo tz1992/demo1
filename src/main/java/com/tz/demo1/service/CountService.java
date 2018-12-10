@@ -5,16 +5,23 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +32,16 @@ import com.tz.demo1.utils.Util;
 public class CountService {
   private static final String SUFFIX_2003 = ".xls";
   private static final String SUFFIX_2007 = ".xlsx";
+  @Value("${mail.fromMail.sender}")
+  private String sender;
+
+  @Value("${mail.fromMail.receiver}")
+  private String receiver;
+
+  @Autowired
+  private JavaMailSender javaMailSender;
+
+
 
   public void deal(MultipartFile file, String sex2, String census, double low, double high,
       HttpServletResponse response, String age, String days, String sum, String overTime) throws IOException {
@@ -132,6 +149,25 @@ public class CountService {
     wb.write(os);
     os.flush();
     os.close();
+    /*
+     * 发带附件的邮件
+     */
+    MimeMessage message=javaMailSender.createMimeMessage();
+    try {
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(sender);
+        helper.setTo(receiver);
+        helper.setSubject("附件邮件");
+        helper.setText("这是一封带附件的邮件", true);
+        helper.addAttachment(fileName, file);
+       
+
+        javaMailSender.send(message);
+       
+    } catch (MessagingException e) {
+        
+    }
+
 
   }
 
