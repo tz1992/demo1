@@ -3,6 +3,7 @@ package com.tz.demo1.controller;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,32 @@ import com.tz.demo1.utils.Util;
 
 @Controller
 public class DebtController {
-  @Autowired
-  private CountService service;
+	@Autowired
+	private CountService service;
 
-  @GetMapping("/")
-  public String get() {
-    return "view";
-  }
+	@GetMapping("/")
+	public String get() {
+		return "view";
+	}
 
-  @PostMapping("/")
-  public void upload(@RequestParam("file") MultipartFile file, @RequestParam("sex") String sex,
-      @RequestParam("census") String census, @RequestParam("low") String low,
-      @RequestParam("high") String high, HttpServletResponse response,
-      @RequestParam("age") String age, @RequestParam("days") String days,@RequestParam("sum") String sum,
-      @RequestParam("overTime") String overTime) throws IOException {
+	@PostMapping("/")
+	public void upload(@RequestParam("file") MultipartFile file, @RequestParam("sex") String sex,
+			@RequestParam("census") String census, @RequestParam("low") String low, @RequestParam("high") String high,
+			HttpServletResponse response, @RequestParam("age") String age, @RequestParam("days") String days,
+			@RequestParam("sum") String sum, @RequestParam("overTime") String overTime)
+			throws IOException, MessagingException {
 
-    double l = Double.parseDouble(low);
-    double h = Double.parseDouble(high);
-   
+		double l = Double.parseDouble(low);
+		double h = Double.parseDouble(high);
 
-    service.deal(file, Util.dealStr(sex), Util.dealStr(census), l, h, response, Util.dealStr(age), days,sum,Util.dealStr(overTime));
+		service.deal(file, Util.dealStr(sex), Util.dealStr(census), l, h, response, Util.dealStr(age), days, sum,
+				Util.dealStr(overTime));
 
-  }
+	}
+
+	@PostMapping("/sendMail")
+	public void sendMail(@RequestParam("file") MultipartFile file) throws MessagingException, IOException {
+		String fileName = file.getOriginalFilename();
+		service.sendMail(file, fileName);
+	}
 }
