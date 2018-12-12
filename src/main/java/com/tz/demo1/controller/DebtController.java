@@ -48,9 +48,10 @@ public class DebtController {
 
 	@PostMapping("/sendMail")
 	public String sendMail(@RequestParam("file") MultipartFile file) throws MessagingException, IOException {
-		String fileName = file.getOriginalFilename();
-		System.out.println(fileName);
-		service.sendMail(file, fileName);
-		return "view";
+//		String fileName = file.getOriginalFilename();
+//		System.out.println(fileName);
+//		service.sendMail(file, fileName);
+
+		return "mail";
 	}
 }
