@@ -1,27 +1,12 @@
 package com.tz.demo1.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.mail.BodyPart;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeUtility;
-import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -168,15 +153,15 @@ public class CountService {
 	 */
 
 	public void sendMail(MultipartFile file, String fileName) throws MessagingException, IOException {
-
+		System.setProperty("mail.mime.splitlongparameters", "false");
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		helper.setFrom(sender);
 		helper.setTo(receiver);
 		helper.setSubject(fileName);
 		helper.setText("这是一封带附件的邮件", true);
-		helper.addAttachment(fileName + ".xls", file);
-
+		helper.addAttachment(fileName, file);
+        
 		javaMailSender.send(message);
 
 	}
