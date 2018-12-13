@@ -5,6 +5,9 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +46,7 @@ public class CountService {
 			HttpServletResponse response, String age, String days, String sum, String overTime)
 			throws IOException, MessagingException {
 		ArrayList<Debt> list = new ArrayList<>();
+		ArrayList<Debt> result=new ArrayList<>();
 		Workbook workbook = null;
 		String originalFilename = file.getOriginalFilename();
 
@@ -61,28 +65,29 @@ public class CountService {
 		if (workbook != null) {
 
 			Sheet sheet = workbook.getSheetAt(0);
-			double total = 0;
+			
 			for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 
 				Row row = sheet.getRow(i);
 				// Excel表中的性别，户籍，进入案池时间，余额，证件信息
 				String sex = row.getCell(6).getStringCellValue();
+				//逾期
 				String time = row.getCell(0).getStringCellValue();
 				String hometown = row.getCell(7).getStringCellValue();
 				String days1 = row.getCell(3).getStringCellValue();
 				// 余额
-				double principle = row.getCell(5).getNumericCellValue();
+				double balance = row.getCell(5).getNumericCellValue();
 				String ID = row.getCell(8).getStringCellValue();
 				/*
 				 * 判断这些信息是否和理
 				 */
 
-				if (Util.judge(census, hometown) && Util.judge(sex2, sex) && Util.judge(overTime, time)
-						&& (principle >= low && principle <= high) && Util.judgeId(ID, age)
+				if (Util.judge(census, hometown) && Util.judge(sex2, sex)  && Util.judgeId(ID, age)
 						&& Util.judgeTime(days, days1)) {
-					total += row.getCell(5).getNumericCellValue();
+					
 					Debt debt = new Debt();
-					debt.setBalance(row.getCell(5).getNumericCellValue());
+					debt.setBalance(balance);
+					debt.setOverTime(time);
 					debt.setClientCode(row.getCell(17).getStringCellValue());
 					debt.setCode("Q72");
 					debt.setDays(row.getCell(3).getStringCellValue());
@@ -92,16 +97,64 @@ public class CountService {
 					continue;
 				}
 			}
-			if (total >= Integer.parseInt(sum)) {
-				for (int i = 0; i < list.size(); i++) {
-					Debt debt = list.get(i);
-					total -= debt.balance;
-					list.remove(i);
-					if (total < Integer.parseInt(sum)) {
-						break;
+			
+	
+
+			
+			HashMap<String, ArrayList<Debt>> map=new HashMap<>();
+			
+			for(Debt debt:list){
+				String clientCode=debt.getClientCode();
+				if(map.containsKey(clientCode)){
+					ArrayList<Debt> temp=map.get(clientCode);
+					temp.add(debt);
+					map.put(clientCode, temp);
+				}else{
+					ArrayList<Debt> temp=new ArrayList<>();
+					temp.add(debt);
+					map.put(clientCode, temp);
+				}
+			}
+			     double total=0;
+			for(Map.Entry<String, ArrayList<Debt>> entry:map.entrySet()){
+				if(entry.getValue().size()==1){
+					String time=entry.getValue().get(0).getOverTime();
+					double balance1=entry.getValue().get(0).getBalance();
+					boolean flag=(balance1>=low&&balance1<=high&&Util.judge(overTime, time));
+					if(flag){
+						result.add(entry.getValue().get(0));
+						total+=entry.getValue().get(0).getBalance();
+					}
+				}else {
+					ArrayList<Debt> temp=entry.getValue();
+					boolean flag=false;
+					for(Debt debt:temp){
+						String time=debt.getOverTime();
+						double balance1=debt.getBalance();
+						if(balance1>=low&&balance1<=high&&Util.judge(overTime, time)){
+							flag=true;
+							break;
+						}
+					}
+					if(flag){
+						for(Debt debt:temp){
+							result.add(debt);
+							total+=debt.balance;
+						}
 					}
 				}
 			}
+			
+			if (total >= Integer.parseInt(sum)) {
+			for (int i = 0; i < list.size(); i++) {
+				Debt debt = list.get(i);
+				total -= debt.balance;
+				list.remove(i);
+				if (total < Integer.parseInt(sum)) {
+					break;
+				}
+			}
+		}
 
 		} else {
 			System.out.println("格式错误");
@@ -121,7 +174,7 @@ public class CountService {
 		titlerRow.createCell(2).setCellValue("机构简称");
 		titlerRow.createCell(3).setCellValue("抢案代码");
 
-		for (Debt debts : list) {
+		for (Debt debts :result  ) {
 			int lastRowNum = hsheet.getLastRowNum();
 			HSSFRow dataRow = hsheet.createRow(lastRowNum + 1);
 			dataRow.createCell(0).setCellValue(debts.getClientCode());

@@ -26,10 +26,7 @@ public class DebtController {
 	public String get() {
 		return "view";
 	}
-	@GetMapping("/send")
-	public String get1() {
-		return "mail";
-	}
+
 
 	@PostMapping("/")
 	public void upload(@RequestParam("file") MultipartFile file, @RequestParam("sex") String sex,
@@ -45,12 +42,14 @@ public class DebtController {
 				Util.dealStr(overTime));
           
 	}
-
+    /*
+     * 暂时不用
+     */
 	@PostMapping("/sendMail")
 	public String sendMail(@RequestParam("file") MultipartFile file) throws MessagingException, IOException {
-//		String fileName = file.getOriginalFilename();
-//		System.out.println(fileName);
-//		service.sendMail(file, fileName);
+		String fileName = file.getOriginalFilename();
+		System.out.println(fileName);
+		service.sendMail(file, fileName);
 
 		return "mail";
 	}
