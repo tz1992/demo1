@@ -3,10 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com</groupId>
 	<artifactId>demo1</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>SpringBootUploadFile Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+	
+	<name>demo</name>
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -73,6 +74,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+				<mainClass>com.tz.demo1.Demo1Application</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
