@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -20,8 +19,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -33,14 +30,8 @@ import com.tz.demo1.utils.Util;
 public class CountService {
 	private static final String SUFFIX_2003 = ".xls";
 	private static final String SUFFIX_2007 = ".xlsx";
-	@Value("${mail.fromMail.sender}")
-	private String sender;
 
-	@Value("${mail.fromMail.receiver}")
-	private String receiver;
-
-	@Autowired
-	private JavaMailSender javaMailSender;
+	
 
 	public void deal(MultipartFile file, String sex2, String census, double low, double high,
 			HttpServletResponse response, String age, String days, String sum, String overTime)
@@ -203,7 +194,7 @@ public class CountService {
 	}
 	/*
 	 * 发带附件的邮件
-	 */
+	 
 
 	public void sendMail(MultipartFile file, String fileName) throws MessagingException, IOException {
 		System.setProperty("mail.mime.splitlongparameters", "false");
@@ -218,5 +209,6 @@ public class CountService {
 		javaMailSender.send(message);
 
 	}
+	*/
 
 }
