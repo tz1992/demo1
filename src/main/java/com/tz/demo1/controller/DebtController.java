@@ -66,7 +66,7 @@ public class DebtController {
 	}
 
 	@PostMapping("/")
-	public synchronized void upload(@RequestParam("file") MultipartFile file, @RequestParam("sex") String sex,
+	public synchronized void upload(@RequestParam("file") MultipartFile file, @RequestParam("level") String level,
 			@RequestParam("census") String census, @RequestParam("low") String low, @RequestParam("high") String high,
 			HttpServletResponse response, @RequestParam("age") String age, @RequestParam("days") String days,
 			@RequestParam("sum") String sum, @RequestParam("overTime") String overTime)
@@ -75,7 +75,7 @@ public class DebtController {
 		double l = Double.parseDouble(low);
 		double h = Double.parseDouble(high);
 
-		service.deal(file, Util.dealStr(sex), Util.dealStr(census), l, h, response, Util.dealStr(age), days, sum,
+		service.deal(file, Util.dealStr(level), Util.dealStr(census), l, h, response, Util.dealStr(age), days, sum,
 				Util.dealStr(overTime));
 
 	}

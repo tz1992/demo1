@@ -196,11 +196,17 @@
 						"id": "全部",
 						"text": "全部",
 						"children": [{
-							"id": "男",
-							"text": "男"
+							"id": "旧案",
+							"text": "旧案"
+						},{
+							"id": "一档",
+							"text": "一档"
 						}, {
-							"id": "女",
-							"text": "女"
+							"id": "二档",
+							"text": "二档"
+						},{
+							"id": "三档",
+							"text": "三档"
 						}]
 					}],
 					//                url: "tree_data2.json", //数据源
@@ -368,7 +374,7 @@
 			<form method="POST" enctype="multipart/form-data" action="/">
 
 				<div align="center">
-					本金选择： 最小 <input type="text"  id="check" name="low" required="true" style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
+					余额选择： 最小 <input type="text"  id="check" name="low" required="true" style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
 					最大 <input type="text" name="high" required="true" style="width: 80px;border-color: #95b8e7; border-width: 1px; border-style: solid" />
 				</div>
 				<br />
@@ -379,7 +385,7 @@
 				<br />
 				
 				<div align="center">
-					性别: <select id="ddlLine2" name="sex" style="width: 205px; height: 24px; ">
+					分档: <select id="ddlLine2" name="level" style="width: 205px; height: 24px; ">
 					</select>
 				</div>
 				<br />

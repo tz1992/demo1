@@ -31,7 +31,7 @@ public class CountService {
 
 	
 
-	public void deal(MultipartFile file, String sex2, String census, double low, double high,
+	public void deal(MultipartFile file, String level2, String census, double low, double high,
 			HttpServletResponse response, String age, String days, String sum, String overTime)
 			throws IOException, MessagingException {
 	  //存放结果一
@@ -49,7 +49,6 @@ public class CountService {
 				workbook = new XSSFWorkbook(file.getInputStream());
 			}
 		} catch (Exception e) {
-
 			e.printStackTrace();
 
 		}
@@ -62,25 +61,26 @@ public class CountService {
 
 				Row row = sheet.getRow(i);
 				// Excel表中的性别，户籍，进入案池时间，余额，证件信息
-				String sex = row.getCell(6).getStringCellValue();
+				String level = row.getCell(2).getStringCellValue();
 				//逾期
 				String time = row.getCell(0).getStringCellValue();
-				String hometown = row.getCell(15).getStringCellValue();
+				String hometown = row.getCell(9).getStringCellValue();
+				//进入案池时间
 				String days1 = row.getCell(3).getStringCellValue();
 				// 余额
 				double balance = row.getCell(5).getNumericCellValue();
-				String ID = row.getCell(8).getStringCellValue();
+				String ID = row.getCell(7).getStringCellValue();
 				/*
 				 * 判断这些信息是否和理
 				 */
 
-				if (Util.judge(census, hometown) && Util.judge(sex2, sex)  && Util.judgeId(ID, age)
+				if (Util.judge(census, hometown) && Util.judge(level2, level)  && Util.judgeId(ID, age)
 						&& Util.judgeTime(days, days1)) {
 					
 					Debt debt = new Debt();
 					debt.setBalance(balance);
 					debt.setOverTime(time);
-					debt.setClientCode(row.getCell(17).getStringCellValue());
+					debt.setClientCode(row.getCell(11).getStringCellValue());
 					debt.setCode("Q72");
 					debt.setDays(row.getCell(3).getStringCellValue());
 					debt.setOrg("深创联");
