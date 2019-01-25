@@ -66,7 +66,7 @@ public class DebtController {
 	}
 
 	@PostMapping("/")
-	public void upload(@RequestParam("file") MultipartFile file, @RequestParam("sex") String sex,
+	public synchronized void upload(@RequestParam("file") MultipartFile file, @RequestParam("sex") String sex,
 			@RequestParam("census") String census, @RequestParam("low") String low, @RequestParam("high") String high,
 			HttpServletResponse response, @RequestParam("age") String age, @RequestParam("days") String days,
 			@RequestParam("sum") String sum, @RequestParam("overTime") String overTime)

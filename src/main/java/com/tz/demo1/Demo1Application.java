@@ -11,7 +11,7 @@ public class Demo1Application extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(Demo1Application.class, args);
 	}
-
+    @Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(this.getClass());
 	}

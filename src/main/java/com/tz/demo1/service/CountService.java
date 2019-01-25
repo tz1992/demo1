@@ -19,8 +19,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.tz.demo1.entity.Debt;
@@ -36,8 +34,11 @@ public class CountService {
 	public void deal(MultipartFile file, String sex2, String census, double low, double high,
 			HttpServletResponse response, String age, String days, String sum, String overTime)
 			throws IOException, MessagingException {
+	  //存放结果一
 		ArrayList<Debt> list = new ArrayList<>();
+		//存放结果二
 		ArrayList<Debt> result=new ArrayList<>();
+		ArrayList<Debt> result1=new ArrayList<>();
 		Workbook workbook = null;
 		String originalFilename = file.getOriginalFilename();
 
@@ -64,7 +65,7 @@ public class CountService {
 				String sex = row.getCell(6).getStringCellValue();
 				//逾期
 				String time = row.getCell(0).getStringCellValue();
-				String hometown = row.getCell(7).getStringCellValue();
+				String hometown = row.getCell(15).getStringCellValue();
 				String days1 = row.getCell(3).getStringCellValue();
 				// 余额
 				double balance = row.getCell(5).getNumericCellValue();
@@ -106,7 +107,7 @@ public class CountService {
 					map.put(clientCode, temp);
 				}
 			}
-			     double total=0;
+			     
 			for(Map.Entry<String, ArrayList<Debt>> entry:map.entrySet()){
 				if(entry.getValue().size()==1){
 					String time=entry.getValue().get(0).getOverTime();
@@ -114,7 +115,7 @@ public class CountService {
 					boolean flag=(balance1>=low&&balance1<=high&&Util.judge(overTime, time));
 					if(flag){
 						result.add(entry.getValue().get(0));
-						total+=entry.getValue().get(0).getBalance();
+						
 					}
 				}else {
 					ArrayList<Debt> temp=entry.getValue();
@@ -130,22 +131,24 @@ public class CountService {
 					if(flag){
 						for(Debt debt:temp){
 							result.add(debt);
-							total+=debt.balance;
+							
 						}
 					}
 				}
 			}
+			int total=0;
+		   
+		   for(Debt debt:result){
+		     double balance=debt.getBalance();
+		     if(total+balance<Integer.parseInt(sum)){
+		       total+=balance;
+		       result1.add(debt);
+		     }else {
+              break;
+            }
+		     
+		   }
 			
-			if (total >= Integer.parseInt(sum)) {
-			for (int i = 0; i < list.size(); i++) {
-				Debt debt = list.get(i);
-				total -= debt.balance;
-				list.remove(i);
-				if (total < Integer.parseInt(sum)) {
-					break;
-				}
-			}
-		}
 
 		} else {
 			System.out.println("格式错误");
@@ -165,7 +168,7 @@ public class CountService {
 		titlerRow.createCell(2).setCellValue("机构简称");
 		titlerRow.createCell(3).setCellValue("抢案代码");
 
-		for (Debt debts :result  ) {
+		for (Debt debts :result1  ) {
 			int lastRowNum = hsheet.getLastRowNum();
 			HSSFRow dataRow = hsheet.createRow(lastRowNum + 1);
 			dataRow.createCell(0).setCellValue(debts.getClientCode());

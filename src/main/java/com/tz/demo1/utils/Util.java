@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.regex.Pattern;
 
 import com.tz.demo1.entity.Debt;
 
@@ -70,18 +71,28 @@ public class Util {
 		/*
 		 * 时间段判断
 		 */
-		// 表中时间
-		String[] arr = days1.split("/");
-		int year = Integer.parseInt(arr[0]);
-		int month = Integer.parseInt(arr[1]);
-		// 选定的时间
-		int year1 = Integer.parseInt(days.split("/")[0]);
-		int month1 = Integer.parseInt(days.split("/")[1]);
-		boolean flagDays = false;
-		if (year > year1 || (year == year1 && month >= month1)) {
-			flagDays = true;
-		}
-		return flagDays;
+		
+	 
+	  String reg="([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})";
+	   
+	    if(Pattern.compile(reg).matcher(days1).matches()){
+	   // 表中时间
+	      String[] arr = days1.split("/");
+	        int year = Integer.parseInt(arr[0]);
+	        int month = Integer.parseInt(arr[1]);
+	        // 选定的时间
+	        int year1 = Integer.parseInt(days.split("/")[0]);
+	        int month1 = Integer.parseInt(days.split("/")[1]);
+	        
+	        if (year > year1 || (year == year1 && month >= month1)) {
+	            return true;
+	        }else {
+              return false;
+            }
+	    }else{
+	      return false;
+	    }
+		
 	}
 
 	// 字符串处理
